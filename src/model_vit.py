@@ -11,19 +11,15 @@ class PatchEmbedding(nn.Module):
         super().__init__()
         self.img_size = img_size
         self.patch_size = patch_size
-        self.grid_size = img_size // patch_size  # e.g., 256/16=16 => 16x16 patches
+        self.grid_size = img_size // patch_size 
 
         self.proj = nn.Conv2d(in_channels, embed_dim, 
                               kernel_size=patch_size, stride=patch_size)
 
     def forward(self, x):
-        # x shape: [B, 3, H, W]
         x = self.proj(x)  
-        # shape: [B, embed_dim, H/patch_size, W/patch_size]
-        x = x.flatten(2)  
-        # shape: [B, embed_dim, num_patches]
-        x = x.transpose(1, 2)  
-        # shape: [B, num_patches, embed_dim]
+        x = x.flatten(2) 
+        x = x.transpose(1, 2) 
         return x
 
 
@@ -43,15 +39,11 @@ class MultiHeadSelfAttention(nn.Module):
 
     def forward(self, x):
         B, N, C = x.shape
-        # x: [B, N, C], where N = number of patches
-
         q = self.query(x).reshape(B, N, self.num_heads, self.head_dim).transpose(1,2)
         k = self.key(x).reshape(B, N, self.num_heads, self.head_dim).transpose(1,2)
         v = self.value(x).reshape(B, N, self.num_heads, self.head_dim).transpose(1,2)
 
-        # q, k, v: [B, num_heads, N, head_dim]
-
-        # Scaled Dot-Product
+        # we scale the dot product here
         attn_scores = (q @ k.transpose(-2, -1)) / math.sqrt(self.head_dim)
         attn_probs = attn_scores.softmax(dim=-1)  # [B, num_heads, N, N]
         attn_probs = self.attn_drop(attn_probs)
@@ -78,10 +70,7 @@ class TransformerBlock(nn.Module):
         )
 
     def forward(self, x):
-        # x -> LN -> MHSA -> residual
         x = x + self.drop_path(self.attn(self.norm1(x)))
-
-        # x -> LN -> MLP -> residual
         x = x + self.drop_path(self.mlp(self.norm2(x)))
         return x
 
@@ -100,8 +89,6 @@ class VisionTransformer(nn.Module):
         super().__init__()
         self.patch_embed = PatchEmbedding(img_size, patch_size, in_channels, embed_dim)
         num_patches = (img_size // patch_size) * (img_size // patch_size)
-
-        # Learnable class token
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
         # Positional embeddings
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches+1, embed_dim))
@@ -114,9 +101,7 @@ class VisionTransformer(nn.Module):
         ])
 
         self.norm = nn.LayerNorm(embed_dim)
-        # Classification head
         self.fc = nn.Linear(embed_dim, num_classes)
-
         self._init_weights()
 
     def _init_weights(self):
@@ -138,15 +123,9 @@ class VisionTransformer(nn.Module):
         x = x + self.pos_embed[:, : x.size(1), :]
         x = self.pos_drop(x)
 
-        # Pass through Transformer blocks
         for block in self.blocks:
             x = block(x)
-
-        # Final normalization
         x = self.norm(x)
-        # Extract the [CLS] token
-        cls_token_final = x[:, 0]  # [B, embed_dim]
-
-        # Classify
-        logits = self.fc(cls_token_final)  # [B, num_classes]
+        cls_token_final = x[:, 0] 
+        logits = self.fc(cls_token_final) 
         return logits
