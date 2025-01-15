@@ -42,12 +42,9 @@ class MultiHeadSelfAttention(nn.Module):
         q = self.query(x).reshape(B, N, self.num_heads, self.head_dim).transpose(1,2)
         k = self.key(x).reshape(B, N, self.num_heads, self.head_dim).transpose(1,2)
         v = self.value(x).reshape(B, N, self.num_heads, self.head_dim).transpose(1,2)
-
-        # we scale the dot product here
         attn_scores = (q @ k.transpose(-2, -1)) / math.sqrt(self.head_dim)
-        attn_probs = attn_scores.softmax(dim=-1)  # [B, num_heads, N, N]
+        attn_probs = attn_scores.softmax(dim=-1) 
         attn_probs = self.attn_drop(attn_probs)
-
         out = (attn_probs @ v).transpose(1,2).reshape(B, N, C)
         out = self.out(out)
         return out
@@ -90,11 +87,8 @@ class VisionTransformer(nn.Module):
         self.patch_embed = PatchEmbedding(img_size, patch_size, in_channels, embed_dim)
         num_patches = (img_size // patch_size) * (img_size // patch_size)
         self.cls_token = nn.Parameter(torch.zeros(1, 1, embed_dim))
-        # Positional embeddings
         self.pos_embed = nn.Parameter(torch.zeros(1, num_patches+1, embed_dim))
         self.pos_drop = nn.Dropout(dropout)
-
-        # Transformer blocks
         self.blocks = nn.ModuleList([
             TransformerBlock(embed_dim, num_heads, mlp_ratio, dropout)
             for _ in range(depth)
@@ -112,14 +106,9 @@ class VisionTransformer(nn.Module):
 
     def forward(self, x):
         B = x.shape[0]
-        # Patch embedding
-        x = self.patch_embed(x)  # [B, num_patches, embed_dim]
-
-        # Expand cls_token for each batch
-        cls_tokens = self.cls_token.expand(B, -1, -1)  # [B, 1, embed_dim]
-        x = torch.cat((cls_tokens, x), dim=1)          # [B, num_patches+1, embed_dim]
-
-        # Add positional embedding
+        x = self.patch_embed(x) 
+        cls_tokens = self.cls_token.expand(B, -1, -1) 
+        x = torch.cat((cls_tokens, x), dim=1)   
         x = x + self.pos_embed[:, : x.size(1), :]
         x = self.pos_drop(x)
 

@@ -151,7 +151,6 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
 
-    # Initialize Vision Transformer
     model = VisionTransformer(
         img_size=img_size,
         patch_size=16,
