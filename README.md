@@ -43,7 +43,7 @@ This repository contains the implementation of a Vision Transformer (ViT)-based 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<username>/perceptivit.git
+   git clone https://github.com/ParamChordiya/PerceptiVIT.git
    cd perceptivit
    ```
 
