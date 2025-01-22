@@ -155,7 +155,7 @@ perceptivit/
 
 ## Contributors
 
-- [Your Name](https://github.com/<username>)
+- [Param Chordiya](https://github.com/paramchordiya)
 
 ---
 
