@@ -8,8 +8,8 @@ from src.model_vit import VisionTransformer
 
 st.set_page_config(
     page_title="PerceptiVIT",
-    page_icon="🖼️",  # You can use an emoji or path to an image
-    layout="centered"  # Options: 'centered', 'wide'
+    page_icon="🖼️", 
+    layout="centered" 
 )
 
 @st.cache_resource
