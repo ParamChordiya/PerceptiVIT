@@ -4,6 +4,10 @@ This repository contains the implementation of a Vision Transformer (ViT)-based 
 
 ---
 
+![thumbnail](image.jpeg)
+
+---
+
 ## Table of Contents
 
 1. [Project Overview](#project-overview)
@@ -135,13 +139,17 @@ perceptivit/
   - Accuracy: 94.86%
 
 - **Visualizations**:
+  - Loss and Accuracy:
+
+   ![Loss and Accuracy Curve](plots/CustomViT_curves.png)
+
   - ROC Curve:
 
-    ![ROC Curve](plots/roc_curve.png)
+    ![ROC Curve](plots/CustomViT_ROC.png)
 
   - Confusion Matrix:
 
-    ![Confusion Matrix](plots/confusion_matrix.png)
+    ![Confusion Matrix](plots/CustomViT_Confusion_Matrix.png)
 
 ---
 

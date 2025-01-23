@@ -109,23 +109,20 @@ def plot_confusion(labels, preds, class_names=['Fake','Real'], title='Confusion 
     plt.show()
 
 def main():
-    # CSV paths
     train_csv = 'data/train.csv'
     valid_csv = 'data/valid.csv'
     test_csv  = 'data/test.csv'
 
-    # Hyperparams
     batch_size = 32
     lr = 1e-4
     epochs = 100
     img_size = 256
     max_samples = 1000
 
-    # Dataloaders
     train_loader, _, _ = get_dataloaders(
         train_csv, valid_csv, test_csv, 
         batch_size=batch_size, 
-        num_workers=0,    # 0 to avoid potential concurrency issues
+        num_workers=0,   
         img_size=img_size,
         max_samples=100000
     )
@@ -133,7 +130,7 @@ def main():
     _, valid_loader, _ = get_dataloaders(
         train_csv, valid_csv, test_csv, 
         batch_size=batch_size, 
-        num_workers=0,    # 0 to avoid potential concurrency issues
+        num_workers=0,   
         img_size=img_size,
         max_samples=20000
     )
@@ -141,12 +138,11 @@ def main():
     _, _, test_loader = get_dataloaders(
         train_csv, valid_csv, test_csv, 
         batch_size=batch_size, 
-        num_workers=0,    # 0 to avoid potential concurrency issues
+        num_workers=0,   
         img_size=img_size,
         max_samples=20000
     )
 
-    # Device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Using device: {device}")
 
@@ -165,11 +161,9 @@ def main():
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.AdamW(model.parameters(), lr=lr)
 
-    # Lists for plotting
     train_loss_list, val_loss_list = [], []
     train_acc_list, val_acc_list = [], []
 
-    # Training loop
     for epoch in range(epochs):
         # print(f"\n=== EPOCH {epoch+1}/{epochs} ===")
         train_loss, train_acc = train_one_epoch(model, device, train_loader, criterion, optimizer)
