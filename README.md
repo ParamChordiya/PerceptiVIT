@@ -131,12 +131,12 @@ perceptivit/
 ## Results
 
 - **Model Accuracy**:
-  - Training: ~95%
-  - Validation: ~92%
+  - Training: ~99%
+  - Validation: ~96%
 
 - **Test Performance**:
-  - Loss: 0.1996
-  - Accuracy: 94.86%
+  - Loss: 0.1999
+  - Accuracy: 95.49%
 
 - **Visualizations**:
   - Loss and Accuracy:
