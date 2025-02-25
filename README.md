@@ -156,8 +156,8 @@ perceptivit/
 ## Future Improvements
 
 - Add support for additional datasets and labels.
-- Enhance the Streamlit UI for better user experience.
 - Optimize the model for deployment on edge devices.
+- Try random things
 
 ---
 
