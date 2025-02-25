@@ -167,4 +167,10 @@ perceptivit/
 
 ---
 
+## Dataset Used
+
+- [140k Real and Fake Faces](https://www.kaggle.com/datasets/xhlulu/140k-real-and-fake-faces)
+
+---
+
 Thank you for using **PerceptiVIT**! Feel free to contribute or raise issues for improvements.
