@@ -137,6 +137,9 @@ perceptivit/
 - **Test Performance**:
   - Loss: 0.1999
   - Accuracy: 95.49%
+  - Precision: 98.65%
+  - Recall: 92.25%
+  - F1-score: 95.34%
 
 - **Visualizations**:
   - Loss and Accuracy:
